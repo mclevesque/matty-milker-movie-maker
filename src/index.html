@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matty Milker Movie Maker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Title Bar -->
+    <div class="title-bar">
+        <span class="title-icon">🥛&#127916;</span>
+        <span class="title-text">Matty Milker Movie Maker</span>
+        <span class="title-spacer"></span>
+        <span class="title-milk">🥛</span>
+    </div>
+
+    <!-- Menu Bar -->
+    <div class="menu-bar">
+        <span class="menu-item">File</span>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+        <button class="toolbar-btn" id="btnImport">
+            <span class="tb-icon">&#128229;</span> Import Media
+        </button>
+        <div class="toolbar-sep"></div>
+        <button class="toolbar-btn" id="btnPublish">
+            <span class="tb-icon">&#128228;</span> Publish Movie
+        </button>
+        <div class="toolbar-spacer"></div>
+        <div class="preview-res-display">
+            <select id="previewResolution">
+                <option value="854x480">480p Preview</option>
+                <option value="1280x720" selected>720p Preview</option>
+                <option value="1920x1080">1080p Preview</option>
+            </select>
+            <select id="previewFps">
+                <option value="30" selected>30 fps</option>
+                <option value="60">60 fps</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Tasks Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-title">Tasks</div>
+
+            <div class="task-section">
+                <div class="section-label">Import</div>
+                <a class="task-link" id="linkImportVideo">Videos</a>
+                <a class="task-link" id="linkImportPictures">Pictures</a>
+                <a class="task-link" id="linkImportAudio">Audio or Music</a>
+            </div>
+
+            <div class="task-section">
+                <div class="section-label">Edit</div>
+                <a class="task-link active-link" id="linkImportedMedia">Imported media</a>
+                <a class="task-link" id="linkEffects">Effects</a>
+                <a class="task-link" id="linkTransitions">Transitions</a>
+                <a class="task-link" id="linkTitles">Titles and credits</a>
+            </div>
+
+            <div class="task-section">
+                <div class="section-label">Music</div>
+                <a class="task-link" id="linkFreeMusic">&#127925; Free Music Library</a>
+            </div>
+
+            <div class="task-section">
+                <div class="section-label">Publish to</div>
+                <a class="task-link" id="linkPublishPC">This computer</a>
+                <a class="task-link" id="linkPublishYT">YouTube</a>
+            </div>
+        </div>
+
+        <div class="resize-handle vertical" id="resizeSidebar"></div>
+
+        <!-- Center: Media Bin (Resolve-style tabs) -->
+        <div class="center-area">
+            <div class="media-bin-tabs">
+                <button class="bin-tab active" data-pane="media">Media</button>
+                <button class="bin-tab" data-pane="effects">Effects</button>
+                <button class="bin-tab" data-pane="transitions">Transitions</button>
+                <button class="bin-tab" data-pane="titles">Titles</button>
+                <button class="bin-tab" data-pane="music">&#127925; Music</button>
+            </div>
+
+            <!-- Media Pane -->
+            <div class="bin-pane active" id="paneMedia">
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-icon">&#128193;</div>
+                    <p>Drag media here or click Import</p>
+                </div>
+                <div class="media-grid" id="mediaGrid"></div>
+            </div>
+
+            <!-- Effects Pane -->
+            <div class="bin-pane" id="paneEffects">
+                <div class="preset-grid">
+                    <div class="preset-card" data-effect="none"><div class="preset-thumb">&#128683;</div><span>None</span></div>
+                    <div class="preset-card" data-effect="grayscale"><div class="preset-thumb gray-preview"></div><span>Grayscale</span></div>
+                    <div class="preset-card" data-effect="sepia"><div class="preset-thumb sepia-preview"></div><span>Sepia</span></div>
+                    <div class="preset-card" data-effect="brightness"><div class="preset-thumb bright-preview"></div><span>Brighten</span></div>
+                    <div class="preset-card" data-effect="contrast"><div class="preset-thumb contrast-preview"></div><span>Contrast</span></div>
+                    <div class="preset-card" data-effect="invert"><div class="preset-thumb invert-preview"></div><span>Invert</span></div>
+                </div>
+            </div>
+
+            <!-- Transitions Pane -->
+            <div class="bin-pane" id="paneTransitions">
+                <div class="preset-grid">
+                    <div class="preset-card" data-transition="fade"><div class="preset-thumb">&#9723;&#10142;&#9724;</div><span>Fade</span></div>
+                    <div class="preset-card" data-transition="dissolve"><div class="preset-thumb">&#128256;</div><span>Dissolve</span></div>
+                    <div class="preset-card" data-transition="wipe-left"><div class="preset-thumb">&#9664;</div><span>Wipe Left</span></div>
+                    <div class="preset-card" data-transition="wipe-right"><div class="preset-thumb">&#9654;</div><span>Wipe Right</span></div>
+                    <div class="preset-card" data-transition="wipe-up"><div class="preset-thumb">&#9650;</div><span>Wipe Up</span></div>
+                    <div class="preset-card" data-transition="wipe-down"><div class="preset-thumb">&#9660;</div><span>Wipe Down</span></div>
+                </div>
+            </div>
+
+            <!-- Titles Presets Pane -->
+            <div class="bin-pane" id="paneTitles">
+                <p class="pane-hint">Click a preset to customize and add. Double-click text in timeline to edit.</p>
+                <div class="preset-grid">
+                    <div class="title-preset" data-preset="intro-centered">
+                        <div class="title-preview intro-centered-prev"><span>MY MOVIE</span></div>
+                        <span>Centered Title</span>
+                    </div>
+                    <div class="title-preset" data-preset="intro-fade">
+                        <div class="title-preview intro-fade-prev"><span>Title Here</span></div>
+                        <span>Fade-In Title</span>
+                    </div>
+                    <div class="title-preset" data-preset="lower-third">
+                        <div class="title-preview lower-third-prev"><div class="lt-bar"></div><span>Name Here</span></div>
+                        <span>Lower Third</span>
+                    </div>
+                    <div class="title-preset" data-preset="credits">
+                        <div class="title-preview credits-prev"><span>Credits</span><small>Name</small></div>
+                        <span>End Credits</span>
+                    </div>
+                    <div class="title-preset" data-preset="chapter">
+                        <div class="title-preview chapter-prev"><small>Chapter 1</small><span>Title</span></div>
+                        <span>Chapter Card</span>
+                    </div>
+                    <div class="title-preset" data-preset="custom">
+                        <div class="title-preview custom-prev"><span>+</span></div>
+                        <span>Custom Text</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Free Music Pane -->
+            <div class="bin-pane" id="paneMusic">
+                <div class="music-search-bar">
+                    <input type="text" id="musicSearch" placeholder="Search free music (e.g. cinematic, chill, hip hop)...">
+                    <button class="btn-primary" id="btnMusicSearch">Search</button>
+                </div>
+                <p class="pane-hint">Royalty-free music from Pixabay. Free for any use. Attribution auto-added to YouTube description.</p>
+                <div class="music-results" id="musicResults">
+                    <div class="music-placeholder">Search for music above, or browse categories:</div>
+                    <div class="music-categories" id="musicCategories">
+                        <button class="music-cat" data-q="cinematic epic">&#127916; Cinematic</button>
+                        <button class="music-cat" data-q="electronic dance">&#127926; Electronic</button>
+                        <button class="music-cat" data-q="hip hop beat">&#127908; Hip Hop</button>
+                        <button class="music-cat" data-q="acoustic guitar">&#127928; Acoustic</button>
+                        <button class="music-cat" data-q="lo-fi chill">&#127911; Lo-Fi</button>
+                        <button class="music-cat" data-q="rock energy">&#127928; Rock</button>
+                        <button class="music-cat" data-q="happy upbeat">&#127881; Happy</button>
+                        <button class="music-cat" data-q="sad piano">&#127929; Sad</button>
+                        <button class="music-cat" data-q="horror dark">&#128123; Horror</button>
+                        <button class="music-cat" data-q="comedy funny">&#129315; Comedy</button>
+                        <button class="music-cat" data-q="nature ambient">&#127795; Ambient</button>
+                        <button class="music-cat" data-q="jazz smooth">&#127927; Jazz</button>
+                    </div>
+                </div>
+                <div class="music-list" id="musicList"></div>
+                <div class="music-loading hidden" id="musicLoading">Searching for music...</div>
+            </div>
+        </div>
+
+        <div class="resize-handle vertical" id="resizeCenter"></div>
+
+        <!-- Preview Player (right side) -->
+        <div class="preview-panel">
+            <div class="preview-container">
+                <canvas id="previewCanvas" width="1280" height="720"></canvas>
+            </div>
+            <div class="scrub-bar-container" id="scrubBarContainer">
+                <div class="scrub-bar-fill" id="scrubBarFill"></div>
+                <div class="scrub-handle" id="scrubHandle"></div>
+            </div>
+            <div class="preview-time">
+                <span id="currentTime">0:00:00.00</span> / <span id="totalTime">0:00:00.00</span>
+            </div>
+            <div class="preview-controls">
+                <button class="pctrl" id="btnRewind" title="Rewind">&#9198;</button>
+                <button class="pctrl" id="btnStepBack" title="Step Back">&#9194;</button>
+                <button class="pctrl play-btn" id="btnPlay" title="Play">&#9654;</button>
+                <button class="pctrl" id="btnStepFwd" title="Step Forward">&#9193;</button>
+                <button class="pctrl" id="btnFastFwd" title="Forward">&#9197;</button>
+            </div>
+            <div class="preview-split">
+                <button class="split-btn" id="btnSplit">&#9986; Split</button>
+                <button class="split-btn" id="btnDelete">&#128465; Delete</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="resize-handle horizontal" id="resizeTimeline"></div>
+
+    <!-- Storyboard / Timeline -->
+    <div class="storyboard-section">
+        <div class="storyboard-toolbar">
+            <div class="storyboard-tabs">
+                <button class="sb-tab active" id="tabStoryboard">Storyboard</button>
+                <button class="sb-tab" id="tabTimeline">Timeline</button>
+            </div>
+            <div class="sb-controls">
+                <button class="sb-ctrl" id="btnZoomOut" title="Zoom Out">-</button>
+                <span class="sb-zoom-label">Zoom</span>
+                <button class="sb-ctrl" id="btnZoomIn" title="Zoom In">+</button>
+            </div>
+        </div>
+
+        <!-- Storyboard View -->
+        <div class="storyboard-track drop-zone" id="storyboardTrack">
+        </div>
+
+        <!-- Timeline View -->
+        <div class="timeline-view hidden" id="timelineView">
+            <div class="timeline-container" id="timelineContainer">
+                <div class="timeline-ruler" id="timelineRuler"></div>
+                <div class="playhead-line" id="playheadLine"></div>
+                <div class="timeline-track" data-track="video">
+                    <div class="track-label">Video</div>
+                    <div class="track-clips" id="videoClips"></div>
+                </div>
+                <div class="timeline-track track-audio-main" data-track="audio">
+                    <div class="track-label">&#127925; Music</div>
+                    <div class="track-clips" id="audioClips"></div>
+                </div>
+                <div class="timeline-track" data-track="text">
+                    <div class="track-label">Text</div>
+                    <div class="track-clips" id="textClips"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audio attribution (shown when music is added) -->
+        <div class="audio-attribution hidden" id="audioAttribution"></div>
+    </div>
+
+    <!-- Title/Credits Modal -->
+    <div class="modal" id="textModal">
+        <div class="modal-content">
+            <h3 id="textModalTitle">Add Title</h3>
+            <div class="form-group">
+                <label>Text</label>
+                <input type="text" id="textInput" placeholder="Enter your text..." value="Title">
+            </div>
+            <div class="form-group">
+                <label>Font Size</label>
+                <input type="range" id="textSize" min="16" max="120" value="48">
+                <span id="textSizeVal">48px</span>
+            </div>
+            <div class="form-group">
+                <label>Color</label>
+                <input type="color" id="textColor" value="#ffffff">
+            </div>
+            <div class="form-group">
+                <label>Position</label>
+                <select id="textPosition">
+                    <option value="center">Center</option>
+                    <option value="top">Top</option>
+                    <option value="bottom">Bottom</option>
+                    <option value="lower-third">Lower Third</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Duration (seconds)</label>
+                <input type="number" id="textDuration" min="1" max="30" value="5">
+            </div>
+            <div class="form-group">
+                <label>Background</label>
+                <select id="textBg">
+                    <option value="none">None</option>
+                    <option value="shadow">Drop Shadow</option>
+                    <option value="box">Box</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-primary" id="btnTextOk">Add</button>
+                <button class="btn-secondary" id="btnTextCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish Modal -->
+    <div class="modal" id="publishModal">
+        <div class="modal-content publish-modal">
+            <h3>Publish Movie</h3>
+            <div class="publish-options">
+                <div class="publish-option selected" data-target="computer" id="pubComputer">
+                    <div class="pub-icon">&#128187;</div>
+                    <div class="pub-info">
+                        <strong>This computer</strong>
+                        <p>Save as MP4 file</p>
+                    </div>
+                </div>
+                <div class="publish-option" data-target="youtube" id="pubYoutube">
+                    <div class="pub-icon">&#9654;&#65039;</div>
+                    <div class="pub-info">
+                        <strong>YouTube</strong>
+                        <p>Upload directly to your channel</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="publish-details" id="pubComputerDetails">
+                <div class="form-group">
+                    <label>Filename</label>
+                    <input type="text" id="exportFilename" value="My Movie">
+                </div>
+                <div class="form-group">
+                    <label>Export Quality (YouTube Optimized)</label>
+                    <select id="exportPreset">
+                        <option value="youtube-4k">4K Ultra HD (2160p 60fps) — Best quality</option>
+                        <option value="youtube-1440p">2K QHD (1440p 60fps)</option>
+                        <option value="youtube-1080p60" selected>1080p 60fps — Recommended</option>
+                        <option value="youtube-1080p30">1080p 30fps — Standard</option>
+                        <option value="youtube-720p">720p 30fps — Fast upload</option>
+                        <option value="youtube-shorts">YouTube Shorts (1080x1920 vertical)</option>
+                    </select>
+                    <div class="preset-info" id="presetInfo">YouTube's sweet spot. Fast upload, great quality.</div>
+                </div>
+                <div class="export-specs">
+                    <div class="spec-row"><span>Codec:</span><strong>H.264 High Profile</strong></div>
+                    <div class="spec-row"><span>Audio:</span><strong>AAC-LC 48kHz Stereo</strong></div>
+                    <div class="spec-row"><span>Container:</span><strong>MP4 (fast start)</strong></div>
+                    <div class="spec-row"><span>Keyframes:</span><strong>Every 2 seconds</strong></div>
+                </div>
+            </div>
+
+            <div class="publish-details hidden" id="pubYoutubeDetails">
+                <div class="form-group">
+                    <label>Video Title</label>
+                    <input type="text" id="ytTitle" placeholder="My awesome video">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="ytDescription" rows="4" placeholder="Tell viewers about your video..."></textarea>
+                </div>
+                <div class="yt-attribution-section" id="ytAttributionSection">
+                    <!-- Auto-filled with music attribution -->
+                </div>
+                <div class="form-group">
+                    <label>Privacy</label>
+                    <select id="ytPrivacy">
+                        <option value="public">Public</option>
+                        <option value="unlisted">Unlisted</option>
+                        <option value="private" selected>Private</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Export Quality</label>
+                    <select id="ytExportPreset">
+                        <option value="youtube-1080p60" selected>1080p 60fps — Recommended</option>
+                        <option value="youtube-4k">4K Ultra HD (2160p 60fps)</option>
+                        <option value="youtube-720p">720p — Fastest</option>
+                    </select>
+                </div>
+                <div class="yt-auth-section" id="ytAuthSection">
+                    <button class="btn-google" id="btnYtLogin">
+                        <span class="g-icon">G</span> Sign in with Google
+                    </button>
+                    <p class="yt-auth-note">Connect your YouTube account to upload</p>
+                </div>
+                <div class="yt-auth-section hidden" id="ytLoggedIn">
+                    <div class="yt-user-info">
+                        <span class="yt-avatar">&#128100;</span>
+                        <span id="ytUsername">Connected</span>
+                        <button class="btn-link" id="btnYtLogout">Sign out</button>
+                    </div>
+                    <div class="form-group hidden" id="ytChannelPicker">
+                        <label>Upload to Channel</label>
+                        <select id="ytChannel"></select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button class="btn-primary" id="btnPublishOk">Publish</button>
+                <button class="btn-secondary" id="btnPublishCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Progress Modal -->
+    <div class="modal" id="exportModal">
+        <div class="modal-content">
+            <h3>Publishing Movie...</h3>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="exportProgress"></div>
+            </div>
+            <p id="exportStatus">Initializing...</p>
+            <div class="modal-buttons">
+                <button class="btn-secondary" id="btnExportCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Hidden file inputs -->
+    <input type="file" id="fileInput" multiple accept="video/*,image/*,audio/*,.mkv,.avi,.mov,.wmv,.flv,.m4v,.3gp,.ts,.mts,.vob,.heic,.heif,.avif,.m4a,.flac,.opus,.aiff,.wma" style="display:none">
+    <input type="file" id="videoInput" multiple accept="video/*,.mkv,.avi,.mov,.wmv,.flv,.m4v,.3gp,.ts,.mts,.vob,.divx" style="display:none">
+    <input type="file" id="imageInput" multiple accept="image/*,.heic,.heif,.avif,.raw,.tiff" style="display:none">
+    <input type="file" id="audioInput" multiple accept="audio/*,.m4a,.flac,.opus,.aiff,.wma,.ape,.alac" style="display:none">
+    <input type="file" id="musicInput" accept="audio/*,.m4a,.flac,.opus,.aiff,.wma" style="display:none">
+
+    <script src="timeline.js"></script>
+    <script src="renderer.js"></script>
+    <script src="youtube.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

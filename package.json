@@ -1,0 +1,15 @@
+{
+  "name": "matty-milker-movie-maker",
+  "version": "1.0.0",
+  "description": "Matty Milker Movie Maker - Video Editor",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder"
+  },
+  "author": "Matt",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^41.0.3"
+  }
+}
